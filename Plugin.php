@@ -12,10 +12,10 @@ class Plugin extends PluginBase
     public function pluginDetails()
     {
         return [
-            'name'        => 'UnsplashForBlog',
-            'description' => 'No description provided yet...',
-            'author'      => 'SunLab',
-            'icon'        => 'icon-leaf'
+            'name' => 'UnsplashForBlog',
+            'description' => 'sunlab.unsplashforblog::lang.plugin.description',
+            'author' => 'SunLab',
+            'icon' => 'icon-leaf'
         ];
     }
 
@@ -37,11 +37,10 @@ class Plugin extends PluginBase
     protected function applyOnRainLabBlog()
     {
         Event::listen('backend.form.extendFields', static function (Backend\Widgets\Form $widget) {
-            if (!$widget->getController() instanceof \RainLab\Blog\Controllers\Posts) {
-                return;
-            }
-
-            if (!$widget->model instanceof \RainLab\Blog\Models\Post) {
+            if (
+                !$widget->getController() instanceof \RainLab\Blog\Controllers\Posts ||
+                !$widget->model instanceof \RainLab\Blog\Models\Post
+            ) {
                 return;
             }
 
@@ -59,21 +58,28 @@ class Plugin extends PluginBase
     protected function applyOnLovataGoodNews()
     {
         Event::listen('backend.form.extendFields', static function (Backend\Widgets\Form $widget) {
-            if (!$widget->getController() instanceof \Lovata\GoodNews\Controllers\Articles) {
+            if ((
+                !$widget->getController() instanceof \Lovata\GoodNews\Controllers\Articles ||
+                !$widget->model instanceof \Lovata\GoodNews\Models\Article
+            ) && (
+                !$widget->getController() instanceof \Lovata\GoodNews\Controllers\Categories ||
+                !$widget->model instanceof \Lovata\GoodNews\Models\Category
+            )) {
                 return;
             }
 
-            if (!$widget->model instanceof \Lovata\GoodNews\Models\Article) {
-                return;
-            }
+            $previewImageField = $widget->getField('preview_image');
+            $previewImageField->config['type'] = 'unsplashpicker';
 
-            $fileuploadField = $widget->getField('preview_image');
-            $fileuploadField->config['type'] = 'unsplashpicker';
+            $imagesField = $widget->getField('images');
+            $imagesField->config['type'] = $previewImageField->config['type'] = 'unsplashpicker';
 
             $widget->removeField('preview_image');
+            $widget->removeField('images');
 
             $widget->addTabFields([
-                'preview_image' => $fileuploadField->config
+                'preview_image' => $previewImageField->config,
+                'images' => $imagesField->config
             ]);
         });
     }
