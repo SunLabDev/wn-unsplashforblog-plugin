@@ -24,7 +24,7 @@ class Plugin extends PluginBase
         if (\SunLab\UnsplashPicker\Models\Settings::instance()->isConfigured()) {
             $pluginManager = PluginManager::instance();
 
-            if ($pluginManager->hasPlugin('RainLab\Blog')) {
+            if ($pluginManager->hasPlugin('RainLab\Blog') || $pluginManager->hasPlugin('Winter\Blog')) {
                 $this->applyOnRainLabBlog();
             }
 
@@ -38,8 +38,10 @@ class Plugin extends PluginBase
     {
         Event::listen('backend.form.extendFields', static function (Backend\Widgets\Form $widget) {
             if (
-                !$widget->getController() instanceof \RainLab\Blog\Controllers\Posts ||
-                !$widget->model instanceof \RainLab\Blog\Models\Post
+                (!$widget->getController() instanceof \RainLab\Blog\Controllers\Posts ||
+                !$widget->model instanceof \RainLab\Blog\Models\Post) &&
+                (!$widget->getController() instanceof \Winter\Blog\Controllers\Posts ||
+                !$widget->model instanceof \Winter\Blog\Models\Post)
             ) {
                 return;
             }
