@@ -1,8 +1,8 @@
 {
-    "name": "sunlab/oc-unsplashforblog-plugin",
+    "name": "sunlab/wn-unsplashforblog-plugin",
     "type": "winter-plugin",
     "description": "Add Unsplash plugin for Winter CMS",
-    "homepage": "https://github.com/SunLabDev/oc-unsplashforblog-plugin",
+    "homepage": "https://github.com/SunLabDev/wn-unsplashforblog-plugin",
     "keywords": ["winter cms", "winter", "plugin", "blog", "Unsplash"],
     "license": "MIT",
     "authors": [
