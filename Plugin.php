@@ -41,7 +41,8 @@ class Plugin extends PluginBase
                 (!$widget->getController() instanceof \RainLab\Blog\Controllers\Posts ||
                 !$widget->model instanceof \RainLab\Blog\Models\Post) &&
                 (!$widget->getController() instanceof \Winter\Blog\Controllers\Posts ||
-                !$widget->model instanceof \Winter\Blog\Models\Post)
+                !$widget->model instanceof \Winter\Blog\Models\Post) ||
+                $widget->isNested
             ) {
                 return;
             }
@@ -65,7 +66,8 @@ class Plugin extends PluginBase
                 !$widget->model instanceof \Lovata\GoodNews\Models\Article
             ) && (
                 !$widget->getController() instanceof \Lovata\GoodNews\Controllers\Categories ||
-                !$widget->model instanceof \Lovata\GoodNews\Models\Category
+                !$widget->model instanceof \Lovata\GoodNews\Models\Category ||
+                $widget->isNested
             )) {
                 return;
             }
